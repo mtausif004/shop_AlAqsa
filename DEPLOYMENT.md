@@ -111,3 +111,22 @@ Create a new Google Spreadsheet and name it `Al Aqsa Burmese Shop Database`. It 
 3. Create a Telegram channel or group for order alerts (e.g. `Al Aqsa Orders`), add your bot as administrator.
 4. Get your `TELEGRAM_CHAT_ID` by messaging `@userinfobot` or checking `https://api.telegram.org/bot<TOKEN>/getUpdates`.
 5. Enter both values in Apps Script **Script Properties**.
+
+
+## Production rebuild note
+
+This repository now uses `.github/workflows/deploy-pages.yml`.
+Do NOT publish the repository root directly as the GitHub Pages website.
+GitHub Actions builds the React/Vite application and deploys `dist/`.
+
+Set the public repository variable:
+
+`VITE_APPS_SCRIPT_URL`
+
+under:
+
+Settings → Secrets and variables → Actions → Variables
+
+Then enable:
+
+Settings → Pages → Source → GitHub Actions
