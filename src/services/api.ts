@@ -4,11 +4,16 @@ import { INITIAL_PRODUCTS, INITIAL_CATEGORIES, INITIAL_BANNERS, INITIAL_COURIERS
 // Public Apps Script API URL from environment or Admin Configuration
 const STORAGE_API_KEY = 'alaqsa_custom_api_url';
 export function getApiBaseUrl(): string {
+  // Production source of truth: build-time public Apps Script URL.
+  // A localStorage override is retained only for diagnostics/development.
+  const buildTimeUrl = (import.meta.env.VITE_APPS_SCRIPT_URL as string) || '';
+  if (buildTimeUrl.trim()) return buildTimeUrl.trim();
+
   if (typeof window !== 'undefined') {
     const saved = localStorage.getItem(STORAGE_API_KEY);
     if (saved && saved.trim()) return saved.trim();
   }
-  return (import.meta.env.VITE_APPS_SCRIPT_URL as string) || '';
+  return '';
 }
 
 export function setApiBaseUrl(url: string) {
@@ -41,14 +46,6 @@ function initLocalDatabase() {
   }
   if (!localStorage.getItem(LS_KEYS.COURIERS)) {
     localStorage.setItem(LS_KEYS.COURIERS, JSON.stringify(INITIAL_COURIERS));
-  }
-  if (!localStorage.getItem(LS_KEYS.ADMIN_CREDENTIALS)) {
-    // Initial credentials: mtausif004 / fkfk004
-    localStorage.setItem(LS_KEYS.ADMIN_CREDENTIALS, JSON.stringify({
-      username: 'mtausif004',
-      password: 'fkfk004',
-      role: 'SUPER_ADMIN'
-    }));
   }
   if (!localStorage.getItem(LS_KEYS.ORDERS)) {
     // Seed one completed sample order for testing tracking & invoice
@@ -529,23 +526,12 @@ export async function adminLogin(username: string, password: string): Promise<{ 
     return { success: false, error: remote.error || 'ভুল তথ্য' };
   }
 
-  // Local Simulation: initial credentials mtausif004 / fkfk004
-  const rawCreds = localStorage.getItem(LS_KEYS.ADMIN_CREDENTIALS);
-  const creds = rawCreds ? JSON.parse(rawCreds) : { username: 'mtausif004', password: 'fkfk004', role: 'SUPER_ADMIN' };
-
-  if (username.trim().toLowerCase() === creds.username.toLowerCase() && password.trim() === creds.password) {
-    const session: AdminSession = {
-      token: 'LOCAL_SIM_TOKEN_' + Math.random().toString(36).substring(2),
-      adminId: 'ADM-0001',
-      username: creds.username,
-      role: creds.role,
-      expiresAt: Date.now() + 12 * 3600 * 1000 // 12 hours
-    };
-    sessionStorage.setItem(LS_KEYS.ADMIN_SESSION, JSON.stringify(session));
-    return { success: true, session };
-  }
-
-  return { success: false, error: 'ভুল ব্যবহারকারীর নাম অথবা পাসওয়ার্ড' };
+  // Production security rule:
+  // Never authenticate an administrator from browser/localStorage data.
+  return {
+    success: false,
+    error: 'Backend API সংযোগ পাওয়া যায়নি। Admin login-এর জন্য Apps Script Web App চালু করুন।'
+  };
 }
 
 export function getActiveAdminSession(): AdminSession | null {
@@ -580,15 +566,10 @@ export async function adminChangeCredentials(newPassword: string, newUsername?: 
     return { success: false, error: remote.error };
   }
 
-  // Local Simulation
-  const rawCreds = localStorage.getItem(LS_KEYS.ADMIN_CREDENTIALS);
-  const creds = rawCreds ? JSON.parse(rawCreds) : { username: 'mtausif004', password: 'fkfk004', role: 'SUPER_ADMIN' };
-  creds.password = newPassword.trim();
-  if (newUsername?.trim()) creds.username = newUsername.trim();
-  localStorage.setItem(LS_KEYS.ADMIN_CREDENTIALS, JSON.stringify(creds));
-  adminLogout();
-
-  return { success: true, message: 'ক্রেডেনশিয়াল সফলভাবে পরিবর্তন করা হয়েছে। নতুন পাসওয়ার্ড দিয়ে পুনরায় লগইন করুন।' };
+  return {
+    success: false,
+    error: 'Backend API সংযোগ পাওয়া যায়নি। Admin credential পরিবর্তন শুধুমাত্র Apps Script backend-এ করা যাবে।'
+  };
 }
 
 export async function adminGetOrders(searchQuery?: string): Promise<Order[]> {
