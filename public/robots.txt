@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+Allow: /product/
+Allow: /category/
+Allow: /about
+Allow: /contact
+Allow: /faq
+Allow: /privacy
+Allow: /terms
+
+# Disallow private and administrative areas
+Disallow: /SecurePanel-Aqsa
+Disallow: /admin
+Disallow: /track-order
+Disallow: /invoice/
+Disallow: /checkout
+Disallow: /cart
+
+Sitemap: https://alaqsaburmeseshop.com/sitemap.xml

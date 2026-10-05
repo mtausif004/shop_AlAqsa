@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+:root {
+  --primary: #6B352A;
+  --primary-dark: #52271E;
+  --primary-light: #8B4536;
+  --secondary: #FFF1A6;
+  --secondary-dark: #F7E47B;
+  --accent: #2F4858;
+  --mint: #DDFBEF;
+  --cream: #FAF7F2;
+  --text-main: #2F4858;
+  --font-bengali: 'Hind Siliguri', 'Noto Sans Bengali', system-ui, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+}
+
+body {
+  font-family: var(--font-bengali);
+  background-color: var(--cream);
+  color: var(--text-main);
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1ede7;
+}
+::-webkit-scrollbar-thumb {
+  background: #d4c5b9;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #6B352A;
+}
+
+/* Print Styles for Invoice */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 12pt;
+  }
+  .no-print, header, footer, nav, #adminSidebar, .toast-container, button.no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  .printable-area {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    width: 100% !important;
+  }
+  @page {
+    margin: 1.5cm;
+    size: A4 portrait;
+  }
+}

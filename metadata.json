@@ -1,0 +1,6 @@
+{
+  "name": "Al Aqsa Burmese Shop",
+  "description": "আল আকসা বার্মিজ শপ – কক্সবাজারের ঐতিহ্যবাহী খাঁটি বার্মিজ আচার, চাটনি, মিষ্টি তেঁতুল, বালাচাও, কফি ও স্কিন কেয়ার প্রডাক্টের বিশ্বস্ত অনলাইন শপ।",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

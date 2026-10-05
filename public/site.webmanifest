@@ -1,0 +1,9 @@
+{
+  "name": "Al Aqsa Burmese Shop | আল আকসা বার্মিজ শপ",
+  "short_name": "Al Aqsa Burmese",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAF7F2",
+  "theme_color": "#6B352A",
+  "description": "কক্সবাজারের আসল বার্মিজ আচার, চাটনি, মিষ্টি তেঁতুল, স্পেশাল বালাচাও, চন্দন-থানাকা ও চকলেট।"
+}
